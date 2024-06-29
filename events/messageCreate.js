@@ -8,8 +8,9 @@ module.exports = {
     code: async (client, message) => {
  let value;
     try {
-        const result = await db.get("main", `prefix_${message.guild.id}`);
-        value = result.value;
+        const result = await db.get("settings", `prefix_${message.guild.id}`);
+        console.log(result)
+        value = result;
  } catch {
      value = vars.prefix
  }

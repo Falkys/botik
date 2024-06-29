@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 const config = require('../../config.js');
-const { setguild, getguild } = require('../../Utils/funcs');
+const { set, get } = require('../../Utils/funcs');
 module.exports = {
     name: "prefix",
     aliases: [],
@@ -35,18 +35,18 @@ module.exports = {
 
         if (!args[0]) return message.channel.send({ embeds: [embedmissing] });
         if (args[0].length > 5) return message.channel.send({ embeds: [embedtoolong] });
-        if (args[0] == await getguild("prefix", message.guild.id))
+        if (args[0] == await get(message, "guild", "settings", "prefix"))
             return message.channel.send({ embeds: [embedsame] });
 
         if (args[0] === "reset") {
-          setguild("prefix", message.guild.id, "*")
+          set(message, "guild", "settings", "prefix", config.prefix)
             const embed = new discord.EmbedBuilder()
                 .setDescription(`Prefix reset to Default : \`${config.prefix}\``)
                 .setColor(config.color)
             return message.channel.send({ embeds: [embed] });
         }
 
-        setguild("prefix", message.guild.id, args[0]);
+        set(message, "guild", "settings", "prefix", args[0])
         const embed = new discord.EmbedBuilder()
         .setTitle("Prefix")
             .setDescription(`Префикс Changed to : \`${args[0]}\``)
